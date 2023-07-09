@@ -1,0 +1,3 @@
+[submodule "sddm/tokyo-night-sddm"]
+	path = sddm/tokyo-night-sddm
+	url = https://github.com/rototrash/tokyo-night-sddm
