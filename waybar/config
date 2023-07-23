@@ -1,20 +1,38 @@
 {
     "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 30, // Waybar height (to be removed for auto height)
+    "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 28, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
-    "spacing": 6, // Gaps between modules (4px)
+    "spacing": 0, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-center": ["clock"],
-    "modules-left": ["temperature", "memory", "cpu", "wlr/workspaces"],
-    "modules-right": ["bluetooth", "network", "pulseaudio",  "battery"],
+    "modules-center": ["wlr/workspaces"],
+    "modules-left": ["clock", "battery"],
+    "modules-right": ["bluetooth", "network", "pulseaudio"],
     "wlr/workspaces": {
 	    "on-click": "activate",
-	    "format": "<span font='15'>{icon}</span>",
+	    "format": "{icon}",
+	    "icon": false,
+	    "format-active": "<span font='20'><b>{icon}</b></span>",
+	    //<span font='15'>{icon}</span>
+	    "persistent_workspaces": {
+	    "1":[],
+	    "2":[],
+	    "3":[],
+	    "9":[],
+	    },
 	    "format-icons": {
-		    "urgent": "",
-		    "active": "",
-		    "default": "",
+	    	    "1": "1",
+		    "2": "2",
+		    "3": "3",
+		    "4": "4",
+		    "5": "5",
+		    "6": "6",
+		    "7": "7",
+		    "8": "8",
+		    "9": "󰎈",
+		    //"urgent": "",
+		    //"active": "<span weight='bold'><b>!!!!</b></span>",
+		    //"default": "",
 	    },
     },
     "bluetooth": {
@@ -76,37 +94,46 @@
 	    }
     },
     "tray": {
-	    // "icon-size": 21,
-	    "spacing": 10
+	    "icon-size": 15,
+	    "spacing": 10,
+	    "show-passive-items": true
     },
     "clock": {
 	    "timezone": "Europe/Helsinki",
-	    "format": "{:%d.%m.%g | %H:%M}",
+	    "format": "{:%H:%M | %d.%m.%g}",
 	    // "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
 	    "tooltip": true,
-	    "tooltip-format": "<tt><big>{calendar}</big></tt>",
+	    "tooltip-format": "<span><big>{calendar}</big></span>",
 	    "calendar": {
 		    "mode": "month",
 		    "weeks-pos": "left",
 		    "format": {
-			    "days": "<span color='#ecc6d9'><b>{}</b></span>"
+			    "months": "<span color='#4A5782'><b>{}</b></span>",
+			    "weeks": "<span color='#4A5782'><b>{}</b></span>",
+			    "days": "<span color='#ecc6d9'><b>{}</b></span>",
+			    "weekdays": "<span color='#4A5782'><b>{}</b></span>",
+			    "today": "<span color='#8AADF4'><b>{}</b></span>"
 		    }
+	    },
+	    "actions": {
+		    "on-scroll-up": "shift_down",
+		    "on-scrool-down": "shift_up"
 	    },
 
     },
     "cpu": {
-	    "format": "{usage}% <span font='13'></span>",
+	    "format": "{usage}% <span font='12'></span>",
 	    "tooltip": false
     },
     "memory": {
-	    "format": "{}% <span font='14'></span>"
+	    "format": "{}% <span font='12'></span>"
     },
     "temperature": {
 	    // "thermal-zone": 2,
 	    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
 	    "critical-threshold": 80,
 	    // "format-critical": "{temperatureC}°C {icon}",
-	    "format": "{temperatureC}°C {icon}",
+	    "format": "    {temperatureC}°C {icon}",
 	    "format-icons": ["", "", ""]
     },
     //"backlight": {
@@ -120,41 +147,41 @@
 		    "warning": 30,
 		    "critical": 15
 	    },
-	    "format": "{capacity}% <span font='15'>{icon}</span>",
+	    "format": "{icon} {capacity}%",
 	    "format-charging": "{capacity}% ",
 	    "format-plugged": "{capacity}% ",
 	    "format-alt": "{time} {icon}",
 	    // "format-good": "", // An empty format will hide the module
 	    // "format-full": "",
-	    "format-icons": ["", "", "", "", ""]
+	    "format-icons": ["󰁻", "󰁽", "󰁿", "󰂁", "<span font='15' rise='-2.8pt'>󱈏</span>"]
     },
     "battery#bat2": {
 	    "bat": "BAT2"
     },
     "network": { // 
         "format-wifi": "{essid} <span font='15'>󰘊</span>",
-        "format-ethernet": "{ipaddr}/{cidr}",
-        "tooltip-format": "{ifname} via {gwaddr}",
+        "format-ethernet": "󰈁",
+        "tooltip-format": "{ifname} via {gwaddr} IP:{ipaddr}",
         "format-linked": "{ifname} (No IP)",
         "format-disconnected": "Disconnected ⚠",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": { 
         // "scroll-step": 1, // %, can be a float
-        "format": "{volume}% {icon} {format_source} ",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": "<span font='15'>󰝟</span>{icon} {format_source}",
-        "format-muted": "<span font='15'>󰝟</span>{format_source}",
-        "format-source": "{volume}% <span font='15'></span>",
-        "format-source-muted": "<span font='15'></span>",
+        "format": "{icon} {volume}%  {format_source} ",
+        "format-bluetooth": "{volume}% {icon}  {format_source}",
+        "format-bluetooth-muted": "<span font='15' rise='-2.8pt'>󰝟</span>{icon}  {format_source}",
+        "format-muted": "<span font='15' rise='-2.8pt'>󰝟</span> {format_source}",
+        "format-source": "<span font='15' rise='-2.8pt'></span> {volume}%",
+        "format-source-muted": "<span font='15' rise='-2.8pt'></span>",
         "format-icons": {
-            "headphone": "<span font='15'></span>",
+            "headphone": "<span font='15' rise='-2.8pt'></span>",
             "hands-free": "",
-            "headset": "<span font='15'>󰋎</span>",
-            "phone": "<span font='15'></span>",
-            "portable": "<span font='15'></span>",
+            "headset": "<span font='15' rise='-2.8pt'>󰋎</span>",
+            "phone": "<span font='15' rise='-2.8pt'></span>",
+            "portable": "<span font='15' rise='-2.8pt'></span>",
             "car": "",
-            "default": ["<span font='15'></span>", "<span font='15'></span>", "<span font='15'></span>"]
+            "default": ["<span font='15' rise='-2.8pt'></span>", "<span font='15'></span>", "<span font='15' rise='-2.8pt'></span>"]
         },
         "on-click": "pavucontrol"
     },

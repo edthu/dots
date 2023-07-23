@@ -1,15 +1,15 @@
-@import "Catppuccin-Macchiato-Standard-Maroon-Dark.css";
 * {
-    /* `otf-font-awesome` is required to be installed for icons */
     font-family: JetBrainsMono Nerd Font Mono;
-    font-size: 15px;
+    font-size: 12px;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
 }
 
-window#waybar.
 
 window#waybar {
-    background-color: shade(@crust, 0.3); /*rgba(43, 48, 59, 0.5);*/
-    border-bottom: 0px solid rgba(100, 114, 125, 0.5);
+    background-color: transparent;/*shade(@crust, 0.3); rgba(43, 48, 59, 0.5);*/
+    /*border-bottom: 0px solid rgba(100, 114, 125, 0.5);*/
     color: #ffffff;
     transition-property: background-color;
     transition-duration: .5s;
@@ -58,6 +58,13 @@ button:hover {
     padding: 0 5px;
     background-color: transparent;
     color: #ffffff;
+    font-weight: bold;
+}
+
+#workspaces button.flat.active {
+    font-size: 14px;
+    color: #ED8796;
+    font-weight: bolder;
 }
 
 #workspaces button:hover {
@@ -115,10 +122,6 @@ button:hover {
 #window,
 #workspaces {
     margin: 0 4px;
-    border: solid;
-    border-width: 2px;
-    border-color: @borders;
-    border-radius: 10px;
 }
 /*
 .modules-right {
@@ -147,25 +150,16 @@ button:hover {
 }
 
 #clock {
-    background-color: @theme_base_color; /*#64727D;*/
-    border: solid;
-    border-width: 2px;
-    border-color: @borders;
-    border-radius: 10px;
+    background-color: transparent; /*#64727D;*/
 }
 
 #battery {
-    background-color: @theme_base_color; /*#ffffff;*/
+    background-color: transparent; /*#ffffff;*/
     color: @theme_text_color; /*#000000;*/
-    border: solid;
-    border-width: 2px;
-    border-color: @borders; 
-    border-radius: 10px;
 }
 
 #battery.charging, #battery.plugged {
     color: #ffffff;
-    background-color: #26A65B;
 }
 
 @keyframes blink {
@@ -190,12 +184,8 @@ label:focus {
 }
 
 #bluetooth {
-    background-color: @theme_base_color; /*#2ecc71;*/
+    background-color: transparent; /*#2ecc71;*/
     color: @theme_text_color; /*#000000;*/
-    border: solid;
-    border-width: 2px;
-    border-color: @borders;
-    border-radius: 10px;
 }
 
 #cpu {
@@ -224,36 +214,20 @@ label:focus {
 }
 
 #network {
-    background-color: @theme_base_color; /*#2980b9;*/   
-    border: solid;
-    border-width: 2px;
-    border-color: @borders;
-    border-radius: 10px;
+    background-color: transparent;
 }
 
 #network.disconnected {
-    background-color: @theme_base_color; /*#f53c3c;*/
-    border: solid;
-    border-width: 2px;
-    border-color: @borders;
-    border-radius: 10px;
+    background-color: transparent;
 }
 
 #pulseaudio {
-    background-color: @theme_base_color; /*#f1c40f;*/
+    background-color: transparent;
     color: @theme_text_color;/*#000000;*/
-    border: solid;
-    border-width: 2px;
-    border-color: @borders; 
-    border-radius: 10px;
 }
 
 #pulseaudio.muted {
-    background-color: @theme_base_color;/*#90b1b1;*/
-    border: solid;
-    border-width: 2px;
-    border-color: @borders; 
-    border-radius: 10px;
+    background-color: transparent;
     /*color: #2a5c45;*/
 }
 
