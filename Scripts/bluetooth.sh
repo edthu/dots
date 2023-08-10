@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-bt_on=$(bluetoothctl show AC:7B:A1:67:81:BB | grep "Powered: yes")
+bt_on=$(bluetoothctl show 48:89:E7:34:95:2B | grep "Powered: yes")
 
 bt_len=$#bt_on
 
