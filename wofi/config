@@ -1,0 +1,8 @@
+sort_order=alphabetical
+prompt=?_?
+allow_images=true
+hide_scroll=true
+width=400
+key_down=Control_L-j
+key_up=Control_L-k
+
