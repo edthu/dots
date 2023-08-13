@@ -4,6 +4,9 @@
     "height": 28, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 0, // Gaps between modules (4px)
+    "margin-bottom": 2,
+    "margin-right": 2,
+    "margin-left": 2,
     // Choose the order of the modules
     "modules-center": ["wlr/workspaces"],
     "modules-left": ["clock", "battery"],
@@ -159,8 +162,9 @@
 	    "bat": "BAT2"
     },
     "network": { // 
-        "format-wifi": "{essid} <span font='15'>󰘊</span>",
-        "format-ethernet": "󰈁",
+	    "format-wifi": "{essid} <span font='15' rise='-2.8pt'>󰘊</span>",
+	    "on-click-right": "iwgtk",
+	    "format-ethernet": "󰈁",
         "tooltip-format": "{ifname} via {gwaddr} IP:{ipaddr}",
         "format-linked": "{ifname} (No IP)",
         "format-disconnected": "Disconnected ⚠",
