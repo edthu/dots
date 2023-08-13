@@ -8,11 +8,15 @@
 
 
 window#waybar {
-    background-color: transparent;/*shade(@crust, 0.3); rgba(43, 48, 59, 0.5);*/
+    background-color: rgba(41, 44, 66, 0.8);/*shade(@crust, 0.3); rgba(43, 48, 59, 0.5);*/
     /*border-bottom: 0px solid rgba(100, 114, 125, 0.5);*/
     color: #ffffff;
     transition-property: background-color;
     transition-duration: .5s;
+    border: solid;
+    border-color: #ffffff;
+    border-width: 1px;
+    border-radius: 10px;
 }
 
 window#waybar.hidden {
