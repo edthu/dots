@@ -9,7 +9,7 @@
     "margin-left": 2,
     // Choose the order of the modules
     "modules-center": ["wlr/workspaces"],
-    "modules-left": ["clock", "battery"],
+    "modules-left": ["clock", "battery", "tray"],
     "modules-right": ["bluetooth", "network", "pulseaudio"],
     "wlr/workspaces": {
 	    "on-click": "activate",
