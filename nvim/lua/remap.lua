@@ -14,3 +14,5 @@ vim.api.nvim_set_keymap('x', '<leader>p', '"_dP', { noremap = true, silent = tru
 vim.keymap.set('v', '<leader>y', '"+y')
 vim.keymap.set("n", 'r', vim.cmd.red)
 vim.keymap.set("n", '<leader>q', vim.cmd.q)
+vim.keymap.set("v", 'e', '$')
+
