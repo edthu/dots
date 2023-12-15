@@ -78,6 +78,16 @@ return require('packer').startup(function(use)
   use 'mbbill/undotree'
 
   use 'xiyaowong/transparent.nvim'
+
+  use {
+	"echasnovski/mini.hipatterns",
+	config = function() require('mini.hipatterns').setup({
+		highlighters = {
+			hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
+		},
+	})
+	end
+  }
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
