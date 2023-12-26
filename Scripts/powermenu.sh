@@ -13,6 +13,7 @@ case $selected in
 		reboot ;;
 	Shutdown)
 		systemctl poweroff ;;
-        Lock)
+    Lock)
+		playerctl pause &&
 		swaylock -F -C $HOME/.config/swaylock/config ;;
 esac
