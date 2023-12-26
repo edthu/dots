@@ -16,6 +16,7 @@ def change_volume(*args):
     input = str(input_string.get())
 
     mute = re.fullmatch(r'm', input)
+    close = re.fullmatch(r'q', input)
     decrease = re.fullmatch(r'(\d+)j', input)
     increase = re.fullmatch(r'(\d+)k', input)
     set_volume = re.fullmatch(r'\d+', input)
@@ -32,6 +33,8 @@ def change_volume(*args):
             subprocess.run("pactl set-sink-volume 0 +" + increment + "%", shell=True)
         case _ if set_volume:
             subprocess.run("pactl set-sink-volume 0 " + input + "%", shell=True)
+        case _ if close:
+            root.destroy()
         case _:
             print("Not a valid command")
 
