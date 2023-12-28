@@ -21,8 +21,8 @@ class VolumeChanger:
 
     def __init__(self, root):
         self.entry_style = ttk.Style()
-        self.entry_style.configure("A.TEntry", fieldbackground="#363A4F", 
-                                   foreground="#ffffff", font=("JetBrains Mono", 12),
+        self.entry_style.configure("A.TEntry", fieldbackground="#363A4F",
+                                   foreground="#ffffff",
                                    padding=[3, 5, 3, 5], bordercolor="#ee99a0")
         self.bg_style = ttk.Style()
         self.bg_style.configure("A.TFrame", background="#292C42")
@@ -34,19 +34,18 @@ class VolumeChanger:
         mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
-        #s.configure("A.TEntry", background="#292C42", foreground="#000000", font="JetBrainsMono Nerd Font Mono")
-        
+
         self.sink_string = subprocess.check_output("pactl get-sink-volume 0", shell=True, text=True)
         self.volume = list(filter(lambda x: "%" in x, self.sink_string.split(" ")))[0]
-
         self.input_string = StringVar()
 
-        volume_entry = ttk.Entry(mainframe, width=10, style="A.TEntry", textvariable=self.input_string)
+        volume_entry = ttk.Entry(mainframe, width=10, style="A.TEntry", textvariable=self.input_string, font=("JetBrainsMono Nerd Font Mono", 12))
         volume_entry.grid(column=1, row=0, sticky=(W, E))
 
         print(volume_entry["style"])
         print(volume_entry.winfo_class())
-        print(self.entry_style.layout("TEntry"))
+        print(self.entry_style.element_options("Entry.textarea"))
+        print(self.entry_style.lookup("Entry.textarea", "font"))
         
         available_fonts = font.families()
 
