@@ -14,6 +14,6 @@ case $selected in
 	Shutdown)
 		systemctl poweroff ;;
     Lock)
-		playerctl pause &&
+		playerctl pause ;
 		swaylock -F -C $HOME/.config/swaylock/config ;;
 esac
