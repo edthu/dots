@@ -58,11 +58,33 @@ class ControlCenter:
                 anchor="c",
                 justify="c")
 
-        self.progress = IntVar()
-        self.song_progress = ttk.Progressbar(self.mainframe,
+
+        # Progressbar updating
+        # Get the duration of the song and current place
+        # If the current song is playing then keep incrementing this thingy
+        self.progress = IntVar(value=self.get_song_position())
+
+        self.progress_str = StringVar(value=self.format_duration(self.progress.get()))
+        self.progress_label = ttk.Label(self.mainframe,
+                                       style="A.TLabel",
+                                       textvariable=self.progress_str)
+
+
+        self.duration_label = ttk.Label(self.mainframe,
+                                       style="A.TLabel")
+
+        self.song_progressbar = ttk.Progressbar(self.mainframe,
                                              orient="horizontal",
+                                             # the length and units of the song to be different
                                              length=300,
+                                             maximum=self.get_song_length(),
                                              mode="determinate")
+
+        #self.progress.set(self.get_song_position())
+        #print(self.get_song_position())
+        #print(self.get_song_length())
+
+        self.song_progressbar.start(interval=1000)
 
         # self.change_status()
         # self.song_progress.grid_remove()
@@ -96,11 +118,56 @@ class ControlCenter:
         self.volume_entry.focus()
         root.bind("<Return>", self.change_volume)
 
+    # Seconds to minutes:seconds (uhh hours??)
+    def format_duration(self, duration):
+        minutes = duration / 60
+
+        if minutes / 60 > 1:
+            hours = minutes // 60
+            minutes = minutes % 60
+            print("JDLjlkfsdjklfajdkl")
+            print(minutes)
+            if minutes < 10:
+                minutes = str(f"0{int(minutes)}")
+            minutes = str(f"{int(hours)}:{int(minutes)}")
+        else:
+            minutes = int(minutes)
+
+        seconds = duration % 60
+        if seconds < 10:
+            seconds = str(f"0{seconds}")
+        return str(f"{minutes}:{seconds}")
+
     def get_volume(self):
         sink_string = subprocess.check_output("pactl get-sink-volume 0", shell=True, text=True)
         volume = list(filter(lambda x: "%" in x, sink_string.split(" ")))[0]
 
         return str(volume)
+    
+    # Length and position are returned as seconds
+
+    def get_song_position(self):
+        print("2")
+        # Get
+        # error processing
+        try:
+            # Will return 0 
+            position = subprocess.check_output("playerctl position", shell=True, text=True)
+            position_num = float(position.strip())
+            return int(position_num)
+        except subprocess.CalledProcessError as e:
+            print(f"Error in getting the song position: {e}")
+            return(0)
+
+    def get_song_length(self):
+        try:
+            position = subprocess.check_output("playerctl metadata 'mpris:length'", shell=True, text=True)
+            # toi on näköjään millisekunteina
+            position_num = float(position.strip()) / 1000000
+            return int(position_num)
+        except subprocess.CalledProcessError as e:
+            print(f"Error in getting song length: {e}")
+            return(0)
 
     # Return album art, song, artists and album or None if there is
     # no currently playing song
@@ -137,13 +204,26 @@ class ControlCenter:
             self.song_information.grid(row=0, column=1)
 
             print("????????")
-            self.song_progress["variable"] = self.progress
-            self.song_progress["mode"] = "determinate"
-            self.song_progress.grid(row=1, column=0, columnspan=2)
+            self.song_progressbar["variable"] = self.progress
+            self.song_progressbar["mode"] = "determinate"
+            self.song_progressbar.grid(row=1, column=1)
+            self.progress.set(self.get_song_position())
+            print(self.get_song_position())
+            print(self.get_song_length())
+            self.song_progressbar.start(interval=1000)
+            self.song_progressbar["maximum"] = self.get_song_length()
+
+            self.progress_label.grid(row=1, column=0)
+            value = self.format_duration(self.progress.get())
+            self.progress_str.set(value)
+
+            self.duration_label["text"] = self.format_duration(self.get_song_length())
+            self.duration_label.grid(row=1, column=2)
         else:
             self.song_art.grid_remove()
             self.song_information.grid_remove()
-            self.song_progress.grid_remove()
+            self.song_progressbar.grid_remove()
+            self.progress_label.grid_remove()
 
     def poll(self):
         print("ahha")
@@ -227,7 +307,6 @@ class ControlCenter:
         if self.destroy_after_input:
             root.destroy()
         else:
-            # Update things here?
             self.change_status()
             self.volume.set(self.get_volume())
             self.input_string.set("")
