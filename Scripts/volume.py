@@ -20,13 +20,27 @@ class ControlCenter:
         self.entry_style = ttk.Style()
         self.entry_style.configure("A.TEntry",
                                    fieldbackground="#363A4F",
+                                   bordercolor="#ffffff",
                                    foreground="#ffffff",
                                    padding=[3, 5, 3, 5],
-                                   bordercolor="#ee99a0")
+                                   # troughcolor="#363A4F",
+                                   borderwidth=0,
+                                   #lightcolor="#ffffff",
+                                   #darkcolor="#ffffff",
+                                   relief="solid")
+        print(self.entry_style.layout("A.TEntry"))
 
         self.bg_style = ttk.Style()
         self.bg_style.configure("A.TFrame",
                                 background="#292C42")
+
+        self.progressbar_style = ttk.Style()
+        self.progressbar_style.configure("Horizontal.TProgressbar",
+                                         background="#8AADF4",
+                                         troughcolor="#363A4F",
+                                         #darkcolor="#363A4F",
+                                         #lightcolor="#363A4F",
+                                         troughrelief="flat")
 
         self.label_style = ttk.Style()
         self.label_style.configure("A.TLabel", 
@@ -43,11 +57,14 @@ class ControlCenter:
         self.mainframe.grid(column=0,
                             row=0,
                             sticky=(N, W, E, S))
-        """
+        
         root.columnconfigure(0, weight=1)
+        root.columnconfigure(1, weight=0)
+        root.columnconfigure(2, weight=2)
         root.rowconfigure(0, weight=1)
         root.rowconfigure(1, weight=1)
-        """
+        root.rowconfigure(2, weight=0)
+
         self.song_art = ttk.Label(self.mainframe,
                                   style="A.TLabel")
 
@@ -66,42 +83,38 @@ class ControlCenter:
 
         self.progress_str = StringVar(value=self.format_duration(self.progress.get()))
         self.progress_label = ttk.Label(self.mainframe,
-                                       style="A.TLabel",
-                                       textvariable=self.progress_str)
+                                        style="A.TLabel",
+                                        textvariable=self.progress_str)
 
 
+        self.duration_str = StringVar(value=str(self.get_song_length()))
         self.duration_label = ttk.Label(self.mainframe,
-                                       style="A.TLabel")
+                                        style="A.TLabel",
+                                        textvariable=self.duration_str)
 
         self.song_progressbar = ttk.Progressbar(self.mainframe,
-                                             orient="horizontal",
-                                             # the length and units of the song to be different
-                                             length=300,
-                                             maximum=self.get_song_length(),
-                                             mode="determinate")
+                                                # the length and units of the song to be different
+                                                length=300,
+                                                maximum=self.get_song_length(),
+                                                mode="determinate",
+                                                style="Horizontal.TProgressbar",
+                                                orient="horizontal")
 
-        #self.progress.set(self.get_song_position())
-        #print(self.get_song_position())
-        #print(self.get_song_length())
-
-        self.song_progressbar.start(interval=1000)
-
-        # self.change_status()
-        # self.song_progress.grid_remove()
+        print(self.song_progressbar.winfo_children())
 
         self.volume = StringVar(value=self.get_volume())
         current_volume = ttk.Label(self.mainframe,
                                    textvariable=self.volume,
                                    style="A.TLabel")
-        current_volume.grid(row=2, column=0)
+        current_volume.grid(row=2, column=0, columnspan=2)
 
         self.input_string = StringVar()
         self.volume_entry = ttk.Entry(self.mainframe,
-                                 width=10,
-                                 style="A.TEntry",
-                                 textvariable=self.input_string,
-                                 font=("JetBrainsMono Nerd Font Mono", 12))
-        self.volume_entry.grid(row=2, column=1)
+                                      width=10,
+                                      style="A.TEntry",
+                                      textvariable=self.input_string,
+                                      font=("JetBrainsMono Nerd Font Mono", 12))
+        self.volume_entry.grid(row=2, column=2)
 
         print(self.volume_entry["style"])
         print(self.volume_entry.winfo_class())
@@ -143,7 +156,7 @@ class ControlCenter:
         volume = list(filter(lambda x: "%" in x, sink_string.split(" ")))[0]
 
         return str(volume)
-    
+
     # Length and position are returned as seconds
 
     def get_song_position(self):
@@ -197,40 +210,44 @@ class ControlCenter:
         if self.playback_data is not None:
 
             self.song_art["image"] = self.playback_data[0]
-            self.song_art.grid(row=0, column=0)
+            self.song_art.grid(row=0, column=0, columnspan=2, sticky=(E, W, S, N))
 
             self.information_string.set("\n".join(self.playback_data[1:]))
             self.song_information["textvariable"] = self.information_string
-            self.song_information.grid(row=0, column=1)
+            self.song_information.grid(row=0, column=2, sticky=(E, W))
 
             print("????????")
+            status = subprocess.check_output("playerctl status", shell=True, text=True).strip()
+            print(status)
+            print("aayylala")
             self.song_progressbar["variable"] = self.progress
             self.song_progressbar["mode"] = "determinate"
-            self.song_progressbar.grid(row=1, column=1)
+            self.song_progressbar.grid(row=1, column=1, columnspan=2, sticky=(W, E))
             self.progress.set(self.get_song_position())
             print(self.get_song_position())
             print(self.get_song_length())
-            self.song_progressbar.start(interval=1000)
             self.song_progressbar["maximum"] = self.get_song_length()
 
-            self.progress_label.grid(row=1, column=0)
+            self.progress_label.grid(row=1, column=0, sticky=(E, W))
             value = self.format_duration(self.progress.get())
             self.progress_str.set(value)
 
-            self.duration_label["text"] = self.format_duration(self.get_song_length())
-            self.duration_label.grid(row=1, column=2)
+            #self.duration_label["text"] = self.format_duration(self.get_song_length())
+            self.duration_str.set(str(self.get_song_length()))
+            self.duration_label.grid(row=1, column=3, sticky=(E, W))
         else:
-            self.song_art.grid_remove()
-            self.song_information.grid_remove()
-            self.song_progressbar.grid_remove()
-            self.progress_label.grid_remove()
+            self.song_art.grid_forget()
+            self.song_information.grid_forget()
+            self.song_progressbar.grid_forget()
+            self.progress_label.grid_forget()
+            self.duration_label.grid_forget()
 
     def poll(self):
         print("ahha")
         self.change_status()
         self.volume.set(self.get_volume())
         self.volume_entry.focus()
-        root.after(500, self.poll)
+        root.after(1000, self.poll)
 
     """
         Function that takes the input of the user and
