@@ -172,6 +172,7 @@ class ControlCenter:
             print(f"Error in getting the song position: {e}")
             return(0)
 
+    # Output: seconds
     def get_song_length(self):
         try:
             position = subprocess.check_output("playerctl metadata 'mpris:length'", shell=True, text=True)
@@ -233,7 +234,8 @@ class ControlCenter:
             self.progress_str.set(value)
 
             #self.duration_label["text"] = self.format_duration(self.get_song_length())
-            self.duration_str.set(str(self.get_song_length()))
+            duration = self.format_duration(self.get_song_length())
+            self.duration_str.set(duration)
             self.duration_label.grid(row=1, column=3, sticky=(E, W))
         else:
             self.song_art.grid_forget()
