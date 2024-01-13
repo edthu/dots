@@ -141,8 +141,9 @@ class ControlCenter:
             print("JDLjlkfsdjklfajdkl")
             print(minutes)
             if minutes < 10:
-                minutes = str(f"0{int(minutes)}")
-            minutes = str(f"{int(hours)}:{int(minutes)}")
+                minutes = "0" + str(f"{int(minutes)}")
+            minutes = str(f"{int(hours)}:{minutes}")
+            print(minutes)
         else:
             minutes = int(minutes)
 
