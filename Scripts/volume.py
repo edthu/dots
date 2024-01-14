@@ -188,6 +188,8 @@ class ControlCenter:
 
     # Return album art, song, artists and album or None if there is
     # no currently playing song
+
+    # yeah probably check the first try block: 
     def get_data(self):
         # In the cases where there is no album art something else needs to be cooked up (or just put
         # a black box there)
@@ -195,23 +197,48 @@ class ControlCenter:
             # Check that we have the player we want
             # - how ? a list of current players (pref that they are in some kind of order?)
             # which order? - last used i guess but lets see about that
-            players = subprocess.check_output("playerctl -l", shell=True, text=True)
-            print(players)
-            proxy = self.SESSION_BUS.get("org.mpris.MediaPlayer2.spotify", "/org/mpris/MediaPlayer2")
-            metadata = proxy.Get("org.mpris.MediaPlayer2.Player", "Metadata")
+            players = subprocess.check_output("playerctl -l", shell=True, text=True).strip().split()
+            print("ajaja" + players + "jfadskljkfads")
+            print(type(players))
+            if len(players) == 0:
+                print("haha")
 
-            art_response = requests.get(metadata.get("mpris:artUrl"))
-            # Check if the player has a song in the first place
-            image_bytes = io.BytesIO(art_response.content)
-            pil_img = Image.open(image_bytes)
-            pil_img = pil_img.resize((128, 128))
-            tk_img = ImageTk.PhotoImage(pil_img)
+            # do I need to call these later
+            # aka how do I impelement changing between players
+            # actually does not matter - info is collected for all players
+            # and displayed every time.The commands go through a different func
+            # proxies = list()
+            # Get data every time or just check if it has changed and then get it,
+            # I guess it is currently just easier to check since getting it is probably not
+            # that expensive
+            metadata = list()
 
-            song = metadata.get("xesam:title")
-            artists = ", ".join(metadata.get("xesam:artist"))
-            album = metadata.get("xesam:album")
+            for player in players:
+                proxy = self.SESSION_BUS.get("org.mpris.MediaPlayer2" + player,
+                                             "/org/mpris/MediaPlayer2")
+                metadata = proxy.Get("org.mpris.MediaPlayer2.Player", "Metadata")
 
-            return (tk_img, song, artists, album)
+                tk_img = None
+
+                try:
+                    art_response = requests.get(metadata.get("mpris:artUrl"))
+                    # Check if the player has a song in the first place
+                    # if not then 
+                    image_bytes = io.BytesIO(art_response.content)
+                    pil_img = Image.open(image_bytes)
+                    pil_img = pil_img.resize((128, 128))
+                    tk_img = ImageTk.PhotoImage(pil_img)
+                except Exception as e:
+                    print(f"Error in getting art of {player}:\n{e}")
+
+                song = metadata.get("xesam:title")
+                artists = ", ".join(metadata.get("xesam:artist"))
+                album = metadata.get("xesam:album")
+
+                # this will return a list, change the check (in change status)
+                metadata.append((tk_img, song, artists, album))
+
+            return metadata
 
         except Exception as e:
             print(f"Error: {e}")
