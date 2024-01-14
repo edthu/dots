@@ -135,14 +135,16 @@ class ControlCenter:
     def format_duration(self, duration):
         minutes = duration / 60
 
-        if minutes / 60 > 1:
+        if minutes / 60 >= 1:
             hours = minutes // 60
             minutes = minutes % 60
             print("JDLjlkfsdjklfajdkl")
             print(minutes)
             if minutes < 10:
                 minutes = "0" + str(f"{int(minutes)}")
-            minutes = str(f"{int(hours)}:{minutes}")
+                minutes = str(f"{int(hours)}:{(minutes)}")
+            else:
+                minutes = str(f"{int(hours)}:{int(minutes)}")
             print(minutes)
         else:
             minutes = int(minutes)
@@ -150,7 +152,7 @@ class ControlCenter:
         seconds = duration % 60
         if seconds < 10:
             seconds = str(f"0{seconds}")
-        return str(f"{minutes}:{seconds}")
+        return (f"{minutes}:{seconds}")
 
     def get_volume(self):
         sink_string = subprocess.check_output("pactl get-sink-volume 0", shell=True, text=True)
@@ -187,11 +189,19 @@ class ControlCenter:
     # Return album art, song, artists and album or None if there is
     # no currently playing song
     def get_data(self):
+        # In the cases where there is no album art something else needs to be cooked up (or just put
+        # a black box there)
         try:
+            # Check that we have the player we want
+            # - how ? a list of current players (pref that they are in some kind of order?)
+            # which order? - last used i guess but lets see about that
+            players = subprocess.check_output("playerctl -l", shell=True, text=True)
+            print(players)
             proxy = self.SESSION_BUS.get("org.mpris.MediaPlayer2.spotify", "/org/mpris/MediaPlayer2")
             metadata = proxy.Get("org.mpris.MediaPlayer2.Player", "Metadata")
 
             art_response = requests.get(metadata.get("mpris:artUrl"))
+            # Check if the player has a song in the first place
             image_bytes = io.BytesIO(art_response.content)
             pil_img = Image.open(image_bytes)
             pil_img = pil_img.resize((128, 128))
