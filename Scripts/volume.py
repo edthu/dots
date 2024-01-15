@@ -186,35 +186,19 @@ class ControlCenter:
             print(f"Error in getting song length: {e}")
             return(0)
 
-    # Return album art, song, artists and album or None if there is
-    # no currently playing song
+    # Return a list of album arts, songs, artists and albums or None if there are
+    # no players
 
-    # yeah probably check the first try block: 
     def get_data(self):
-        # In the cases where there is no album art something else needs to be cooked up (or just put
-        # a black box there)
+        # This try catches the case where there are no players and players returns an
+        # empty list
         try:
-            # Check that we have the player we want
-            # - how ? a list of current players (pref that they are in some kind of order?)
-            # which order? - last used i guess but lets see about that
             players = subprocess.check_output("playerctl -l", shell=True, text=True).strip().split()
-            print("ajaja" + players + "jfadskljkfads")
-            print(type(players))
-            if len(players) == 0:
-                print("haha")
-
-            # do I need to call these later
-            # aka how do I impelement changing between players
-            # actually does not matter - info is collected for all players
-            # and displayed every time.The commands go through a different func
-            # proxies = list()
-            # Get data every time or just check if it has changed and then get it,
-            # I guess it is currently just easier to check since getting it is probably not
-            # that expensive
-            metadata = list()
+            metadata_list = list()
 
             for player in players:
-                proxy = self.SESSION_BUS.get("org.mpris.MediaPlayer2" + player,
+                print(player)
+                proxy = self.SESSION_BUS.get("org.mpris.MediaPlayer2." + player,
                                              "/org/mpris/MediaPlayer2")
                 metadata = proxy.Get("org.mpris.MediaPlayer2.Player", "Metadata")
 
@@ -230,51 +214,53 @@ class ControlCenter:
                     tk_img = ImageTk.PhotoImage(pil_img)
                 except Exception as e:
                     print(f"Error in getting art of {player}:\n{e}")
-
+                
                 song = metadata.get("xesam:title")
                 artists = ", ".join(metadata.get("xesam:artist"))
                 album = metadata.get("xesam:album")
 
-                # this will return a list, change the check (in change status)
-                metadata.append((tk_img, song, artists, album))
+                metadata_list.append((tk_img, song, artists, album))
 
-            return metadata
+            return metadata_list
 
         except Exception as e:
             print(f"Error: {e}")
             return None
 
     def change_status(self):
-        self.playback_data = self.get_data()
-        if self.playback_data is not None:
+        playback_data = self.get_data()
+        if playback_data is not None and playback_data:
 
-            self.song_art["image"] = self.playback_data[0]
-            self.song_art.grid(row=0, column=0, columnspan=2, sticky=(E, W, S, N))
+            for player_data in playback_data:
+                
+                # change every image .. (aka figure out the layout)
+                self.song_art["image"] = playback_data[0]
+                self.song_art.grid(row=0, column=0, columnspan=2, sticky=(E, W, S, N))
 
-            self.information_string.set("\n".join(self.playback_data[1:]))
-            self.song_information["textvariable"] = self.information_string
-            self.song_information.grid(row=0, column=2, sticky=(E, W))
+                self.information_string.set("\n".join(playback_data[1:]))
+                self.song_information["textvariable"] = self.information_string
+                self.song_information.grid(row=0, column=2, sticky=(E, W))
 
-            print("????????")
-            status = subprocess.check_output("playerctl status", shell=True, text=True).strip()
-            print(status)
-            print("aayylala")
-            self.song_progressbar["variable"] = self.progress
-            self.song_progressbar["mode"] = "determinate"
-            self.song_progressbar.grid(row=1, column=1, columnspan=2, sticky=(W, E))
-            self.progress.set(self.get_song_position())
-            print(self.get_song_position())
-            print(self.get_song_length())
-            self.song_progressbar["maximum"] = self.get_song_length()
+                print("????????")
+                status = subprocess.check_output("playerctl status", shell=True, text=True).strip()
+                print(status)
+                print("aayylala")
+                self.song_progressbar["variable"] = self.progress
+                self.song_progressbar["mode"] = "determinate"
+                self.song_progressbar.grid(row=1, column=1, columnspan=2, sticky=(W, E))
+                self.progress.set(self.get_song_position())
+                print(self.get_song_position())
+                print(self.get_song_length())
+                self.song_progressbar["maximum"] = self.get_song_length()
 
-            self.progress_label.grid(row=1, column=0, sticky=(E, W))
-            value = self.format_duration(self.progress.get())
-            self.progress_str.set(value)
+                self.progress_label.grid(row=1, column=0, sticky=(E, W))
+                value = self.format_duration(self.progress.get())
+                self.progress_str.set(value)
 
-            #self.duration_label["text"] = self.format_duration(self.get_song_length())
-            duration = self.format_duration(self.get_song_length())
-            self.duration_str.set(duration)
-            self.duration_label.grid(row=1, column=3, sticky=(E, W))
+                #self.duration_label["text"] = self.format_duration(self.get_song_length())
+                duration = self.format_duration(self.get_song_length())
+                self.duration_str.set(duration)
+                self.duration_label.grid(row=1, column=3, sticky=(E, W))
         else:
             self.song_art.grid_forget()
             self.song_information.grid_forget()
