@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-from tkinter import font
 from PIL import Image, ImageTk
 import subprocess
 import re
@@ -49,14 +48,26 @@ class ControlCenter:
                                    wraplength=200,
                                    font=("JetBrainsMono Nerd Font Mono", 12))
 
+        self.playerframe = ttk.Frame(root,
+                                   padding="5 5 5 5",
+                                   width="1000",
+                                   height="1000",
+                                   style="A.TFrame")
+
         self.mainframe = ttk.Frame(root,
                                    padding="5 5 5 5",
                                    width="1000",
                                    height="1000",
                                    style="A.TFrame")
+
+        self.playerframe.grid(column=0,
+                              row=0,
+                              sticky=(N,W,E,S))
+
         self.mainframe.grid(column=0,
-                            row=0,
+                            row=1,
                             sticky=(N, W, E, S))
+
         
         root.columnconfigure(0, weight=1)
         root.columnconfigure(1, weight=0)
@@ -65,42 +76,6 @@ class ControlCenter:
         root.rowconfigure(1, weight=1)
         root.rowconfigure(2, weight=0)
 
-        self.song_art = ttk.Label(self.mainframe,
-                                  style="A.TLabel")
-
-        self.information_string = StringVar()
-        self.song_information = ttk.Label(
-                self.mainframe,
-                style="A.TLabel",
-                anchor="c",
-                justify="c")
-
-
-        # Progressbar updating
-        # Get the duration of the song and current place
-        # If the current song is playing then keep incrementing this thingy
-        self.progress = IntVar(value=self.get_song_position())
-
-        self.progress_str = StringVar(value=self.format_duration(self.progress.get()))
-        self.progress_label = ttk.Label(self.mainframe,
-                                        style="A.TLabel",
-                                        textvariable=self.progress_str)
-
-
-        self.duration_str = StringVar(value=str(self.get_song_length()))
-        self.duration_label = ttk.Label(self.mainframe,
-                                        style="A.TLabel",
-                                        textvariable=self.duration_str)
-
-        self.song_progressbar = ttk.Progressbar(self.mainframe,
-                                                # the length and units of the song to be different
-                                                length=300,
-                                                maximum=self.get_song_length(),
-                                                mode="determinate",
-                                                style="Horizontal.TProgressbar",
-                                                orient="horizontal")
-
-        print(self.song_progressbar.winfo_children())
 
         self.volume = StringVar(value=self.get_volume())
         current_volume = ttk.Label(self.mainframe,
@@ -186,6 +161,70 @@ class ControlCenter:
             print(f"Error in getting song length: {e}")
             return(0)
 
+    # Create the widgets that display information about a player
+    # Returns their values that can be changed
+    def create_player_info(self, row_index):
+        print("ahah")
+        self.song_art = ttk.Label(self.playerframe,
+                                  style="A.TLabel")
+        self.song_art.grid(row=row_index,
+                           column=0,
+                           columnspan=2,
+                           sticky=(N,S,W,E))
+
+        self.information_string = StringVar()
+        self.song_information = ttk.Label(
+                self.playerframe,
+                style="A.TLabel",
+                anchor="c",
+                justify="c")
+        self.song_information["textvariable"] = self.information_string
+        self.song_information.grid(row=row_index,
+                                   column=0,
+                                   columnspan=2,
+                                   sticky=(E, W, S, N))
+
+        # Progressbar updating
+        # Get the duration of the song and current place
+        # If the current song is playing then keep incrementing this thingy
+        self.progress = IntVar(value=self.get_song_position())
+        self.progress_str = StringVar(value=self.format_duration(self.progress.get()))
+        self.progress_label = ttk.Label(self.playerframe,
+                                        style="A.TLabel",
+                                        textvariable=self.progress_str)
+        self.progress_label.grid(row=row_index+1,
+                                 column=0,
+                                 sticky=(E, W))
+
+
+        self.song_progressbar = ttk.Progressbar(self.playerframe,
+                                                # the length and units of the song to be different
+                                                length=300,
+                                                maximum=self.get_song_length(),
+                                                mode="determinate",
+                                                style="Horizontal.TProgressbar",
+                                                orient="horizontal")
+
+        self.song_progressbar["variable"] = self.progress
+        self.song_progressbar["mode"] = "determinate"
+        self.song_progressbar.grid(row=row_index+1,
+                                   column=1,
+                                   columnspan=2,
+                                   sticky=(W, E))
+
+
+        self.duration_str = StringVar(value=str(self.get_song_length()))
+        self.duration_label = ttk.Label(self.playerframe,
+                                        style="A.TLabel",
+                                        textvariable=self.duration_str)
+        self.duration_label.grid(row=row_index+1,
+                                 column=3,
+                                 sticky=(E, W))
+
+
+        return (self.song_art, self.information_string, self.progress, self.song_progressbar,
+                self.progress_str, self.duration_str)
+
     # Return a list of album arts, songs, artists and albums or None if there are
     # no players
 
@@ -208,6 +247,7 @@ class ControlCenter:
                     art_response = requests.get(metadata.get("mpris:artUrl"))
                     # Check if the player has a song in the first place
                     # if not then 
+                    print("uwu")
                     image_bytes = io.BytesIO(art_response.content)
                     pil_img = Image.open(image_bytes)
                     pil_img = pil_img.resize((128, 128))
@@ -231,42 +271,56 @@ class ControlCenter:
         playback_data = self.get_data()
         if playback_data is not None and playback_data:
 
+            self.playerframe.grid(column=0,
+                                  row=0,
+                                  sticky=(N,W,E,S))
+
+            row_index = 0
+
             for player_data in playback_data:
                 
-                # change every image .. (aka figure out the layout)
-                self.song_art["image"] = playback_data[0]
-                self.song_art.grid(row=0, column=0, columnspan=2, sticky=(E, W, S, N))
+                player_components = self.create_player_info(row_index)
 
-                self.information_string.set("\n".join(playback_data[1:]))
-                self.song_information["textvariable"] = self.information_string
-                self.song_information.grid(row=0, column=2, sticky=(E, W))
+                player_components[0]["image"] = player_data[0]
+                print("image2")
+                #self.song_art["image"] = player_data[0]
+
+                player_components[1].set("\n".join(player_data[1:]))
+
+                #self.information_string.set("\n".join(player_data[1:]))
+                #self.song_information.grid(row=0, column=2, sticky=(E, W))
 
                 print("????????")
                 status = subprocess.check_output("playerctl status", shell=True, text=True).strip()
                 print(status)
                 print("aayylala")
-                self.song_progressbar["variable"] = self.progress
-                self.song_progressbar["mode"] = "determinate"
-                self.song_progressbar.grid(row=1, column=1, columnspan=2, sticky=(W, E))
+
+                player_components[2].set(self.get_song_position())
+                player_components[3]["maximum"] = self.get_song_length()
+                #self.song_progressbar["maximum"] = self.get_song_length()
+
                 self.progress.set(self.get_song_position())
                 print(self.get_song_position())
                 print(self.get_song_length())
-                self.song_progressbar["maximum"] = self.get_song_length()
 
-                self.progress_label.grid(row=1, column=0, sticky=(E, W))
                 value = self.format_duration(self.progress.get())
-                self.progress_str.set(value)
+                player_components[4].set(value)
+                #self.progress_str.set(value)
 
                 #self.duration_label["text"] = self.format_duration(self.get_song_length())
                 duration = self.format_duration(self.get_song_length())
                 self.duration_str.set(duration)
-                self.duration_label.grid(row=1, column=3, sticky=(E, W))
+
+                row_index = row_index + 2
         else:
-            self.song_art.grid_forget()
-            self.song_information.grid_forget()
-            self.song_progressbar.grid_forget()
-            self.progress_label.grid_forget()
-            self.duration_label.grid_forget()
+            for child in self.playerframe.winfo_children():
+                child.grid_forget()
+            self.playerframe.grid_forget()
+            #self.song_art.grid_forget()
+            #self.song_information.grid_forget()
+            #self.song_progressbar.grid_forget()
+            #self.progress_label.grid_forget()
+            #self.duration_label.grid_forget()
 
     def poll(self):
         print("ahha")
