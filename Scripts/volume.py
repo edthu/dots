@@ -164,8 +164,9 @@ class ControlCenter:
     # Create the widgets that display information about a player
     # Returns their values that can be changed
     def create_player_info(self, row_index):
-        print("ahah")
+        self.image = ImageTk.PhotoImage(Image.new("RGB", (128, 128), "gray"))
         self.song_art = ttk.Label(self.playerframe,
+                                  image=self.image,
                                   style="A.TLabel")
         self.song_art.grid(row=row_index,
                            column=0,
@@ -180,7 +181,7 @@ class ControlCenter:
                 justify="c")
         self.song_information["textvariable"] = self.information_string
         self.song_information.grid(row=row_index,
-                                   column=0,
+                                   column=2,
                                    columnspan=2,
                                    sticky=(E, W, S, N))
 
@@ -209,7 +210,7 @@ class ControlCenter:
         self.song_progressbar["mode"] = "determinate"
         self.song_progressbar.grid(row=row_index+1,
                                    column=1,
-                                   columnspan=2,
+                                   columnspan=3,
                                    sticky=(W, E))
 
 
@@ -218,9 +219,11 @@ class ControlCenter:
                                         style="A.TLabel",
                                         textvariable=self.duration_str)
         self.duration_label.grid(row=row_index+1,
-                                 column=3,
+                                 column=4,
                                  sticky=(E, W))
-
+        
+        for child in self.playerframe.winfo_children():
+            child.grid_configure(padx=5, pady=5)
 
         return (self.song_art, self.information_string, self.progress, self.song_progressbar,
                 self.progress_str, self.duration_str)
@@ -281,7 +284,8 @@ class ControlCenter:
                 
                 player_components = self.create_player_info(row_index)
 
-                player_components[0]["image"] = player_data[0]
+                self.song_image = player_data[0]
+                player_components[0]["image"] = self.song_image
                 print("image2")
                 #self.song_art["image"] = player_data[0]
 
@@ -324,6 +328,7 @@ class ControlCenter:
 
     def poll(self):
         print("ahha")
+        # thread
         self.change_status()
         self.volume.set(self.get_volume())
         self.volume_entry.focus()
