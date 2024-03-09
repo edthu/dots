@@ -1,0 +1,61 @@
+/*@import "a.css";*/
+
+* {
+	font-family: "JetBrainsMono Nerd Font Mono";
+	font-size: 12px;
+}
+
+
+.control-center {
+	background-color: #292C42;
+	border-style: solid none solid solid;
+	border-width: 1px;
+	border-color: #ee99a0; 
+	opacity: 0.9;
+}
+
+.control-center-list {
+	background-color: #292C42;
+}
+
+.text-button{
+	background-color: #363A4F; 
+	border: solid;
+	border-width: 2px;
+	border-color: #ee99a0; 
+}
+
+.control-center-dnd {
+	background-color: #363A4F;
+	color: #ed8796;
+	border-color: #ee99a0; 
+	border-width: 2px;
+}
+
+.control-center-dnd:checked {
+	background-color: #363A4F;
+	color: #a6da95;
+	border-color: #a6da95;
+}
+
+.control-center-dnd slider{
+	background-color: #ed8796;
+}
+
+.control-center-dnd:checked slider{
+	background-color: #a6da95; 
+}
+
+.vertical.notification-content{
+	background-color: #363A4F;
+	border-style: solid;
+	border-color: #ee99a0; 
+	border-width: 3px;
+	padding: 3px;
+}
+
+.notification-row:focus{
+	background: #8087A2; 
+}
+
+
