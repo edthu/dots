@@ -1,11 +1,12 @@
 from tkinter import *
 from tkinter import ttk
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageChops
 import subprocess
 import re
 import pydbus
 import requests
 import io
+from threading import Thread
 
 
 class ControlCenter:
@@ -27,7 +28,6 @@ class ControlCenter:
                                    #lightcolor="#ffffff",
                                    #darkcolor="#ffffff",
                                    relief="solid")
-        print(self.entry_style.layout("A.TEntry"))
 
         self.bg_style = ttk.Style()
         self.bg_style.configure("A.TFrame",
@@ -68,7 +68,6 @@ class ControlCenter:
                             row=1,
                             sticky=(N, W, E, S))
 
-        
         root.columnconfigure(0, weight=1)
         root.columnconfigure(1, weight=0)
         root.columnconfigure(2, weight=2)
@@ -91,16 +90,10 @@ class ControlCenter:
                                       font=("JetBrainsMono Nerd Font Mono", 12))
         self.volume_entry.grid(row=2, column=2)
 
-        print(self.volume_entry["style"])
-        print(self.volume_entry.winfo_class())
-        print(self.entry_style.element_options("Entry.textarea"))
-        print(self.entry_style.lookup("Entry.textarea", "font"))
-
         for child in self.mainframe.winfo_children():
             # grid_info = child.grid_info()
             # if grid_info["row"] != 0:
             child.grid_configure(padx=5, pady=5)
-            print(child.winfo_class())
 
         self.change_status()
         self.volume_entry.focus()
@@ -113,14 +106,11 @@ class ControlCenter:
         if minutes / 60 >= 1:
             hours = minutes // 60
             minutes = minutes % 60
-            print("JDLjlkfsdjklfajdkl")
-            print(minutes)
             if minutes < 10:
                 minutes = "0" + str(f"{int(minutes)}")
                 minutes = str(f"{int(hours)}:{(minutes)}")
             else:
                 minutes = str(f"{int(hours)}:{int(minutes)}")
-            print(minutes)
         else:
             minutes = int(minutes)
 
@@ -138,17 +128,16 @@ class ControlCenter:
     # Length and position are returned as seconds
 
     def get_song_position(self):
-        print("2")
         # Get
         # error processing
         try:
-            # Will return 0 
+            # Will return 0
             position = subprocess.check_output("playerctl position", shell=True, text=True)
             position_num = float(position.strip())
             return int(position_num)
         except subprocess.CalledProcessError as e:
             print(f"Error in getting the song position: {e}")
-            return(0)
+            return 0
 
     # Output: seconds
     def get_song_length(self):
@@ -159,12 +148,13 @@ class ControlCenter:
             return int(position_num)
         except subprocess.CalledProcessError as e:
             print(f"Error in getting song length: {e}")
-            return(0)
+            return 0
 
     # Create the widgets that display information about a player
     # Returns their values that can be changed
     def create_player_info(self, row_index):
-        self.image = ImageTk.PhotoImage(Image.new("RGB", (128, 128), "gray"))
+        self.image = ImageTk.PhotoImage(Image.new("RGB", (128, 128), "blue"))
+        self.current_image = Image.new("RGB", (128, 128), "blue")
         self.song_art = ttk.Label(self.playerframe,
                                   image=self.image,
                                   style="A.TLabel")
@@ -214,7 +204,7 @@ class ControlCenter:
                                    sticky=(W, E))
 
 
-        self.duration_str = StringVar(value=str(self.get_song_length()))
+        self.duration_str = StringVar(value=self.format_duration(self.get_song_length()))
         self.duration_label = ttk.Label(self.playerframe,
                                         style="A.TLabel",
                                         textvariable=self.duration_str)
@@ -244,25 +234,25 @@ class ControlCenter:
                                              "/org/mpris/MediaPlayer2")
                 metadata = proxy.Get("org.mpris.MediaPlayer2.Player", "Metadata")
 
-                tk_img = None
+                new_image = Image.new("RGB", (128, 128), "gray")
 
                 try:
                     art_response = requests.get(metadata.get("mpris:artUrl"))
                     # Check if the player has a song in the first place
                     # if not then 
-                    print("uwu")
                     image_bytes = io.BytesIO(art_response.content)
                     pil_img = Image.open(image_bytes)
                     pil_img = pil_img.resize((128, 128))
-                    tk_img = ImageTk.PhotoImage(pil_img)
+                    # new_image = ImageTk.PhotoImage(pil_img)
+                    new_image = pil_img
                 except Exception as e:
                     print(f"Error in getting art of {player}:\n{e}")
-                
+
                 song = metadata.get("xesam:title")
                 artists = ", ".join(metadata.get("xesam:artist"))
                 album = metadata.get("xesam:album")
 
-                metadata_list.append((tk_img, song, artists, album))
+                metadata_list.append((new_image, song, artists, album))
 
             return metadata_list
 
@@ -274,65 +264,69 @@ class ControlCenter:
         playback_data = self.get_data()
         if playback_data is not None and playback_data:
 
-            self.playerframe.grid(column=0,
-                                  row=0,
-                                  sticky=(N,W,E,S))
+            if not self.playerframe.grid_info():
+                self.playerframe.grid(column=0,
+                                      row=0,
+                                      sticky=(N,W,E,S))
+                print("PLAYERFRAME GRIDDED AGAIN")
 
             row_index = 0
 
             for player_data in playback_data:
-                
-                player_components = self.create_player_info(row_index)
+
+                try:
+                    new_song_info = "\n".join(player_data[1:])
+                    if self.information_string.get() != new_song_info:
+                        player_components = self.create_player_info(row_index)
+                        print("PLAYERINFO NOT SAME AND COMPONENTS CREATED")
+                    else:
+                        player_components = # prev ones
+                except:
+                    player_components = self.create_player_info(row_index)
+
+                    print("COMPONENTS CREATED AGAIN")
 
                 self.song_image = player_data[0]
-                player_components[0]["image"] = self.song_image
-                print("image2")
-                #self.song_art["image"] = player_data[0]
+                image_diff = ImageChops.difference(self.song_image, self.current_image).getbbox() is not None
+                if image_diff:
+                    print("IMAGE DRAWN AGAIN")
+                    self.current_image = self.song_image
+                    self.tk_img = ImageTk.PhotoImage(self.current_image)
+                    player_components[0]["image"] = self.tk_img
 
+                # Song info
                 player_components[1].set("\n".join(player_data[1:]))
 
-                #self.information_string.set("\n".join(player_data[1:]))
-                #self.song_information.grid(row=0, column=2, sticky=(E, W))
-
-                print("????????")
-                status = subprocess.check_output("playerctl status", shell=True, text=True).strip()
-                print(status)
-                print("aayylala")
-
+                # Progress & progressbar
                 player_components[2].set(self.get_song_position())
                 player_components[3]["maximum"] = self.get_song_length()
-                #self.song_progressbar["maximum"] = self.get_song_length()
 
-                self.progress.set(self.get_song_position())
-                print(self.get_song_position())
-                print(self.get_song_length())
-
+                # Progress_str
                 value = self.format_duration(self.progress.get())
                 player_components[4].set(value)
-                #self.progress_str.set(value)
 
-                #self.duration_label["text"] = self.format_duration(self.get_song_length())
                 duration = self.format_duration(self.get_song_length())
-                self.duration_str.set(duration)
+                print("DURATION" + duration)
+                if duration != player_components[5].get() and duration != "0:00":
+                    player_components[5].set(duration)
+                    print("ZERO")
 
                 row_index = row_index + 2
+
         else:
             for child in self.playerframe.winfo_children():
                 child.grid_forget()
             self.playerframe.grid_forget()
-            #self.song_art.grid_forget()
-            #self.song_information.grid_forget()
-            #self.song_progressbar.grid_forget()
-            #self.progress_label.grid_forget()
-            #self.duration_label.grid_forget()
 
     def poll(self):
-        print("ahha")
-        # thread
-        self.change_status()
+        def thread(self):
+            thread = Thread(target=self.change_status())
+            thread.start()
+        # self.change_status()
+        thread(self)
         self.volume.set(self.get_volume())
         self.volume_entry.focus()
-        root.after(1000, self.poll)
+        root.after(500, self.poll)
 
     """
         Function that takes the input of the user and
@@ -413,6 +407,8 @@ class ControlCenter:
             self.volume.set(self.get_volume())
             self.input_string.set("")
             self.volume_entry.focus()
+
+
 
 root = Tk()
 cc = ControlCenter(root)
