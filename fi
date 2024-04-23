@@ -46,7 +46,7 @@ xkb_symbols "kotoistus" {
 
     key <AD01> { [  q,               Q,                q,                     Q                     ] };
     key <AD02> { [  w,               W,                parenright,                     W                     ] };
-    key <AD03> { [  e,               E,                bracketright,              EuroSign] };
+    key <AD03> { [  e,               E,                EuroSign,              EuroSign] };
     key <AD04> { [  r,               R,                braceright,                     R                     ] };
     key <AD05> { [  t,               T,                thorn,                 THORN                 ] };
     key <AD06> { [  y,               Y,                y,                     Y                     ] };
@@ -63,9 +63,9 @@ xkb_symbols "kotoistus" {
     key <AC04> { [  f,               F,                braceleft,                     F                     ] };
     key <AC05> { [  g,               G,                g,                     G                     ] };
     key <AC06> { [  h,               H,                h,                     H                     ] };
-    key <AC07> { [  j,               J,                j,                     J                     ] };
-    key <AC08> { [  k,               K,                kra,                   dead_greek            ] };
-    key <AC09> { [  l,               L,                dead_stroke,           dead_currency         ] };
+    key <AC07> { [  j,               J,                parenright,                     J                     ] };
+    key <AC08> { [  k,               K,                bracketright,                   dead_greek            ] };
+    key <AC09> { [  l,               L,                braceright,           dead_currency         ] };
     key <AC10> { [  odiaeresis,      Odiaeresis,       oslash,                Oslash                ] };
     key <AC11> { [  adiaeresis,      Adiaeresis,       ae,                    AE                    ] };
     key <BKSL> { [  apostrophe,      asterisk,         dead_caron,            dead_breve            ] };
