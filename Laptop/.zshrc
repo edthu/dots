@@ -7,12 +7,31 @@ fi
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+bindkey '^l' autosuggest-accept
+
 HISTFILE=~/.zsh/history
 HISTSIZE=1000
 SAVEHIST=1000
+HISTDUP=erase
 setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
+setopt AUTO_CD
 export PATH="$PATH:/home/eax/.local/share/coursier/bin"
+
+alias ga="git add"
+alias gc="git commit"
+alias gs="git status"
+alias gp="git push"
+alias gpu="git pull"
+
+eval "$(fzf --zsh)"
 
 function fuzzy_find() { 
   BUFFER="fzf --print0 | xargs -0 -o nvim"
@@ -21,14 +40,12 @@ function fuzzy_find() {
 
 zle -N fuzzy_find
 
-bindkey '^f' fuzzy_find
+bindkey '^g' fuzzy_find
 
 source ~/.zsh/catppuccin_macchiato-zsh-syntax-highlighting.zsh
-
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source /home/eax/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-bindkey '^n' autosuggest-accept
