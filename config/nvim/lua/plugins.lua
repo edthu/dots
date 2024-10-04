@@ -19,7 +19,7 @@ return require('packer').startup(function(use)
       requires = { 'nvim-tree/nvim-web-devicons', opt = true }
   }
 
-  use { "catppuccin/nvim", as = "catppuccin", 
+  use { "catppuccin/nvim", as = "catppuccin",
   	opts =  {
 	  transparent = true
 	}}
@@ -33,7 +33,7 @@ return require('packer').startup(function(use)
             ts_update()
         end,
     }
-  
+
   use 'nvim-tree/nvim-web-devicons'
 
   use 'nvim-treesitter/playground'
@@ -43,7 +43,7 @@ return require('packer').startup(function(use)
   requires = { {'nvim-lua/plenary.nvim'} }
   }
 
-  use({'scalameta/nvim-metals', requires = { "nvim-lua/plenary.nvim" }}) 
+  use({'scalameta/nvim-metals', requires = { "nvim-lua/plenary.nvim" }})
 
   use {
   'VonHeikemen/lsp-zero.nvim',
@@ -78,6 +78,8 @@ return require('packer').startup(function(use)
   use 'mbbill/undotree'
 
   use 'xiyaowong/transparent.nvim'
+
+	use {'shortcuts/no-neck-pain.nvim'}
 
   use {
 	"echasnovski/mini.hipatterns",
