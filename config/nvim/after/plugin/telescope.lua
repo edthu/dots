@@ -6,4 +6,5 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>fg', function()
 	builtin.grep_string({ search = vim.fn.input("Grep > ") });
 end)
-
+local actions = require('telescope.actions')
+require('telescope').setup({ defaults = { mappings = { i = {['<leader>q'] = actions.close,},},},})
