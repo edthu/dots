@@ -63,7 +63,7 @@ xkb_symbols "kotoistus" {
     key <AC04> { [  f,               F,                braceleft,                     F                     ] };
     key <AC05> { [  g,               G,                g,                     G                     ] };
     key <AC06> { [  h,               H,                h,                     H                     ] };
-    key <AC07> { [  j,               J,                parenright,                     J                     ] };
+    key <AC07> { [  j,               J,                braceright,                     J                     ] };
     key <AC08> { [  k,               K,                bracketright,                   dead_greek            ] };
     key <AC09> { [  l,               L,                braceright,           dead_currency         ] };
     key <AC10> { [  odiaeresis,      Odiaeresis,       oslash,                Oslash                ] };
