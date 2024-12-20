@@ -6,8 +6,8 @@ require('lualine-config')
 vim.wo.relativenumber = true
 vim.wo.number = true
 vim.opt.ignorecase = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode

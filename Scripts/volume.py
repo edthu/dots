@@ -255,7 +255,6 @@ class ControlCenter:
                 metadata_list.append((new_image, song, artists, album))
 
             return metadata_list
-
         except Exception as e:
             print(f"Error: {e}")
             return None
@@ -280,12 +279,13 @@ class ControlCenter:
                         player_components = self.create_player_info(row_index)
                         print("PLAYERINFO NOT SAME AND COMPONENTS CREATED")
                     else:
-                        player_components = # prev ones
+                        player_components = self.create_player_info(row_index)
                 except:
                     player_components = self.create_player_info(row_index)
 
                     print("COMPONENTS CREATED AGAIN")
 
+                # Change this to compare url instead of image
                 self.song_image = player_data[0]
                 image_diff = ImageChops.difference(self.song_image, self.current_image).getbbox() is not None
                 if image_diff:
@@ -306,7 +306,6 @@ class ControlCenter:
                 player_components[4].set(value)
 
                 duration = self.format_duration(self.get_song_length())
-                print("DURATION" + duration)
                 if duration != player_components[5].get() and duration != "0:00":
                     player_components[5].set(duration)
                     print("ZERO")
@@ -326,7 +325,7 @@ class ControlCenter:
         thread(self)
         self.volume.set(self.get_volume())
         self.volume_entry.focus()
-        root.after(500, self.poll)
+        root.after(1000, self.poll)
 
     """
         Function that takes the input of the user and
