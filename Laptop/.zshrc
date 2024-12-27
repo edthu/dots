@@ -26,10 +26,12 @@ setopt AUTO_CD
 export PATH="$PATH:/home/eax/.local/share/coursier/bin"
 
 alias ga="git add"
-alias gc="git commit"
+alias gc="git commit -m"
 alias gs="git status"
 alias gp="git push"
 alias gpu="git pull"
+
+alias cdlear="clear && cd"
 
 eval "$(fzf --zsh)"
 
