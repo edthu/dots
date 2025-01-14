@@ -45,4 +45,4 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagn
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 
 -- Centering
-vim.keymap.set('n', '<leader>fs', vim.cmd.NoNeckPain)
+vim.keymap.set('n', '<leader>jk', vim.cmd.NoNeckPain)
