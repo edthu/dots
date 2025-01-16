@@ -81,15 +81,30 @@ return require('packer').startup(function(use)
 
 	use {'shortcuts/no-neck-pain.nvim'}
 
+
   use {
 	"echasnovski/mini.hipatterns",
-	config = function() require('mini.hipatterns').setup({
+	config = require('mini.hipatterns').setup({
 		highlighters = {
 			hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
-		},
-	})
-	end
+	}})
   }
+
+  use {
+		"mfussenegger/nvim-dap",
+		requires = {
+			{'theHamsta/nvim-dap-virtual-text'}
+		}
+	}
+
+	use {
+		'rcarriga/nvim-dap-ui',
+		requires = {'nvim-neotest/nvim-nio',
+								'mfussenegger/nvim-dap'},
+	}
+
+	use 'folke/neodev.nvim'
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
