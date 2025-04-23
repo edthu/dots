@@ -1,0 +1,199 @@
+{
+    "layer": "top", // Waybar at top layer
+    "position": "bottom", // Waybar position (top|bottom|left|right)
+    //"height": 28, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 0, // Gaps between modules (4px)
+    "margin-top": 0,
+    // Choose the order of the modules
+    "modules-center": ["hyprland/workspaces"],
+    "modules-left": ["battery", "tray"],
+    "modules-right": ["bluetooth", "network", "pulseaudio"],
+    "hyprland/workspaces": {
+	    "format": "{icon}",
+	    "icon": false,
+	    "all-outputs": false,
+	    "active-only": false,
+	    "format-icons": {
+	    	    "1": "<span font='15'>󰈹</span>",
+		    "2": "<span font='15'></span>",
+		    "3": "<span font='15'>󱓷</span>",
+		    "4": "4",
+		    "5": "5",
+		    "6": "6",
+		    "7": "7",
+		    "8": "8",
+		    "9": "󰎈"
+	    },
+	    "persistent-workspaces": {
+	    "1":[],
+	    "2":[],
+	    "3":[],
+	    "9":[]
+	    }
+    },
+    "bluetooth": {
+	    "controller": "blueman-manager",
+	    "on-click": "blueman-manager",
+	    "on-click-right": "/home/eax/Scripts/bluetooth.sh",
+	    "format-connected": " {device_alias}",
+	    "format-on": " On",
+	    "format-off": " Off",
+	    "format-connected-battery": "{device_battery_percentage}"
+    },
+    "keyboard-state": {
+	    "numlock": true,
+	    "capslock": true,
+	    "format": "{name} {icon}",
+	    "format-icons": {
+		    "locked": "",
+		    "unlocked": ""
+	    }
+    },
+    "sway/scratchpad": {
+	    "format": "{icon} {count}",
+	    "show-empty": false,
+	    "format-icons": ["", ""],
+	    "tooltip": true,
+	    "tooltip-format": "{app}: {title}"
+    },
+    "mpd": {
+	    "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+	    "format-disconnected": "Disconnected ",
+	    "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+	    "unknown-tag": "N/A",
+	    "interval": 2,
+	    "consume-icons": {
+		    "on": " "
+	    },
+	    "random-icons": {
+		    "off": "<span color=\"#f53c3c\"></span> ",
+		    "on": " "
+	    },
+	    "repeat-icons": {
+		    "on": " "
+	    },
+	    "single-icons": {
+		    "on": "1 "
+	    },
+	    "state-icons": {
+		    "paused": "",
+		    "playing": ""
+	    },
+	    "tooltip-format": "MPD (connected)",
+	    "tooltip-format-disconnected": "MPD (disconnected)"
+    },
+    "idle_inhibitor": {
+	    "format": "{icon}",
+	    "format-icons": {
+		    "activated": "",
+		    "deactivated": ""
+	    }
+    },
+    "tray": {
+	    "icon-size": 15,
+	    "spacing": 10,
+	    "show-passive-items": true
+    },
+    "clock": {
+	    "timezone": "Europe/Helsinki",
+	    "format": "{:%H:%M | %d.%m.%g}",
+	    // "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+	    "tooltip": true,
+	    "tooltip-format": "<span><big>{calendar}</big></span>",
+	    "calendar": {
+		    "mode": "month",
+		    "weeks-pos": "left",
+		    "format": {
+			    "months": "<span color='#4A5782'><b>{}</b></span>",
+			    "weeks": "<span color='#4A5782'><b>{}</b></span>",
+			    "days": "<span color='#ecc6d9'><b>{}</b></span>",
+			    "weekdays": "<span color='#4A5782'><b>{}</b></span>",
+			    "today": "<span color='#8AADF4'><b>{}</b></span>"
+		    }
+	    },
+	    "actions": {
+		    "on-scroll-up": "shift_down",
+		    "on-scrool-down": "shift_up"
+	    }
+
+    },
+    "cpu": {
+	    "format": "{usage}% <span font='12'></span>",
+	    "tooltip": false
+    },
+    "memory": {
+	    "format": "{}% <span font='12'></span>"
+    },
+    "temperature": {
+	    // "thermal-zone": 2,
+	    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+	    "critical-threshold": 80,
+	    // "format-critical": "{temperatureC}°C {icon}",
+	    "format": "    {temperatureC}°C {icon}",
+	    "format-icons": ["", "", ""]
+    },
+    //"backlight": {
+    // "device": "acpi_video1",
+    //"format": "{percent}% {icon}",
+    //"format-icons": ["", "", "", "", "", "", "", "", ""]
+    //},
+    "battery": {
+	    "states": {
+		    // "good": 95,
+		    "warning": 30,
+		    "critical": 15
+	    },
+	    "format": "{icon} {capacity}%",
+	    "format-charging": "{capacity}% ",
+	    "format-plugged": "{capacity}% ",
+	    "format-alt": "{time} {icon}",
+	    // "format-good": "", // An empty format will hide the module
+	    // "format-full": "",
+	    "format-icons": ["󰁻", "󰁽", "󰁿", "󰂁", "<span font='15' rise='-2.8pt'>󱈏</span>"]
+    },
+    "battery#bat2": {
+	    "bat": "BAT2"
+    },
+    "network": { // 
+	    "format-wifi": "<span font='15' rise='-2.8pt'>󰘊</span> {essid}",
+	    "on-click": "iwgtk",
+	    "format-ethernet": "󰈁",
+	"tooltip": true,
+        "tooltip-format": "{ifname} via {gwaddr} IP:{ipaddr}",
+        "format-linked": "{ifname} (No IP)",
+        "format-disconnected": "Disconnected ⚠"
+    },
+    "pulseaudio": { 
+        // "scroll-step": 1, // %, can be a float
+        "format": "{icon} {volume}%  {format_source} ",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": "<span font='15' rise='-2.8pt'>󰝟</span>{icon}  {format_source}",
+        "format-muted": "<span font='15' rise='-2.8pt'>󰝟</span> {format_source}",
+        "format-source": "<span font='15' rise='-2.8pt'></span> {volume}%",
+        "format-source-muted": "<span font='15' rise='-2.8pt'></span>",
+        "format-icons": {
+            "headphone": "<span font='15' rise='-2.8pt'></span>",
+            "hands-free": "",
+            "headset": "<span font='15' rise='-2.8pt'>󰋎</span>",
+            "phone": "<span font='15' rise='-2.8pt'></span>",
+            "portable": "<span font='15' rise='-2.8pt'></span>",
+            "car": "",
+            "default": ["<span font='15' rise='-2.8pt'></span>", "<span font='15'></span>", "<span font='15' rise='-2.8pt'></span>"]
+        },
+        "on-click": "pavucontrol"
+    },
+    "custom/media": {
+        "format": "{icon} {}",
+        "return-type": "json",
+        "max-length": 40,
+        "format-icons": {
+            "spotify": "",
+            "default": "🎜"
+        },
+        "escape": true,
+        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+    }
+}
+
