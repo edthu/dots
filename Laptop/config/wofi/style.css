@@ -7,16 +7,17 @@
  * {
     font-family: 'JetBrains Mono Nerd Font', monospace;
     font-size: 12px;
+	  animation: none;
  }
 
  /* Window */
  window {
     margin: 0px;
     padding: 0px;
-    border: 4px solid @accent;
-    border-radius: 10px;
-    background-color: @bg;
-    animation: slideIn 0.5s ease-in-out both;
+    border: 20px solid @accent;
+		background-color: rgba(36, 39, 58, 0.9);
+    /*border-radius: 0px;*/
+    /*animation: slideIn 0.5s ease-in-out both;*/
  }
 
  /* Slide In */
@@ -30,13 +31,19 @@
     }
  }
 
+ #outer-box {
+	 margin: 5px;
+	 padding: 0px;
+ }
+
  /* Inner Box */
  #inner-box {
     margin: 0px;
     padding: 5px;
     border: none;
     background-color: @bg;
-    animation: fadeIn 0.5s ease-in-out both;
+    /*animation: fadeIn 0.5s ease-in-out both;*/
+		width: 400px;
  }
 
  /* Fade In */
@@ -52,10 +59,10 @@
 
  /* Outer Box */
  #outer-box {
-    margin: 2px;
+    margin: 4px;
     padding: 0px;
     border: none;
-	border-radius: 10px;
+		border-radius: 0px;
     background-color: @bg;
  }
 
@@ -70,11 +77,15 @@
  #input {
     margin: 5px;
     padding: 1px;
-    border: none;
     color: @accent;
+		border: 1px solid @accent;
+		border-radius: 0;
+		outline: 1px solid @accent;
     background-color: @bg2;
-    animation: fadeIn 0.5s ease-in-out both;
+    /*animation: fadeIn 0.5s ease-in-out both;*/
+		box-shadow: none;
  }
+
 
  /* Text */
  #text {
@@ -82,7 +93,7 @@
     padding: 1px;
     border: none;
     color: @txt;
-    animation: fadeIn 0.5s ease-in-out both;
+    /*animation: fadeIn 0.5s ease-in-out both;*/
  }
 
  /* Selected Entry */
@@ -92,4 +103,4 @@
 
  #entry:selected #text {
     color: @bg;
- }
+}

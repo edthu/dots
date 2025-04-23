@@ -14,9 +14,9 @@
     margin: 0px;
     padding: 0px;
     border: 4px solid @accent;
-    border-radius: 10px;
+    border-radius: 0;
     background-color: @bg;
-    animation: slideIn 0.5s ease-in-out both;
+		background-color: rgba(36, 39, 58, 0.9);
  }
 
  /* Slide In */
@@ -36,7 +36,6 @@
     padding: 1px;
     border: none;
     background-color: @bg;
-    animation: fadeIn 0.5s ease-in-out both;
  }
 
  /* Fade In */
@@ -55,7 +54,7 @@
     margin: 2px;
     padding: 0px;
     border: none;
-	border-radius: 10px;
+	border-radius: 0;
     background-color: @bg;
  }
 
@@ -71,7 +70,6 @@
     margin: 0px;
     padding: 0px;
     border: none;
-    animation: fadeIn 0.5s ease-in-out both;
     width: 0;
     height: 0;
     overflow: hidden;
@@ -83,7 +81,6 @@
     padding: 10px;
     border: none;
     color: @txt;
-    animation: fadeIn 0.5s ease-in-out both;
  }
 
  /* Selected Entry */

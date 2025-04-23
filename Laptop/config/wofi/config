@@ -3,6 +3,6 @@ prompt=?_?
 allow_images=true
 hide_scroll=true
 width=400
-key_down=Control_L-j
-key_up=Control_L-k
-
+height=300
+key_down=Ctrl-j
+key_up=Ctrl-k
