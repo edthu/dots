@@ -1,0 +1,24 @@
+{
+    "label" : "lock",
+    "action" : "swaylock -F -C $HOME/.config/swaylock/config",
+    "text" : "",
+    "keybind" : "h"
+}
+{
+    "label" : "shutdown",
+    "action" : "systemctl poweroff",
+    "text" : "",
+    "keybind" : "k"
+}
+{
+    "label" : "logout",
+    "action" : "pkill -SIGKILL -u $USER",
+    "text" : "",
+    "keybind" : "j"
+}
+{
+    "label" : "reboot",
+    "action" : "reboot",
+    "text" : "",
+    "keybind" : "l"
+}

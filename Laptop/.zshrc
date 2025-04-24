@@ -42,7 +42,7 @@ function fuzzy_find() {
 
 zle -N fuzzy_find
 
-bindkey '^g' fuzzy_find
+# bindkey '^g' fuzzy_find never ended up using this
 
 source ~/.zsh/catppuccin_macchiato-zsh-syntax-highlighting.zsh
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
