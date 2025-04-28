@@ -1,12 +1,21 @@
 * {
-    font-family: JetBrainsMono Nerd Font Mono;
-    font-size: 12px;
-    min-height: 0;
-    padding: 0;
-		/*color: #ffffff;*/
-		edge-color: #ED8796;
+    font-family: "JetBrainsMono Nerd Font Propo";
+    font-size: 14px;
+		min-height: 0;
 }
 
+tooltip {
+	border-radius: 0;
+	border-width: 1px;
+	border-color: #1E2031;
+}
+
+tooltip label{
+	padding: 0 5px;
+	border-width: 1px;
+	border-radius: 0;
+	border-color: #1E2031;
+}
 
 window#waybar {
     background-color: rgba(41, 44, 66, 1.0);/*shade(@crust, 0.3); rgba(43, 48, 59, 0.5);*/
@@ -32,7 +41,6 @@ window#waybar.empty {
 window#waybar.solo {
     background-color: #FFFFFF;
 }
-*/
 
 window#waybar.termite {
     background-color: #3F3F3F;
@@ -42,10 +50,11 @@ window#waybar.chromium {
     background-color: #000000;
     border: none;
 }
+*/
 
 button {
     /* Use box-shadow instead of border so the text isn't offset */
-    box-shadow: inset 0 -3px transparent;
+    box-shadow: inset 0 2px transparent;
     /* Avoid rounded borders under each button name */
     border: none;
     border-radius: 0;
@@ -57,10 +66,15 @@ button:hover {
     box-shadow: inset 0 -3px #ffffff;
 }
 
-
+#workspaces {
+	background-color: transparent;/*#363B50;*/
+	margin: 0;
+	padding: 0;
+	/*padding: 1px 4px;*/
+}
 
 #workspaces button {
-    padding: 0 5px;
+    padding: 0 4px;
     background-color: transparent;
     color: #ffffff;
     font-weight: bold;
@@ -68,14 +82,16 @@ button:hover {
 
 #workspaces button.flat.active {
     font-size: 14px;
-    color: #ED8796;
+    /*color: #ED8796;*/
     font-weight: bolder;
+    box-shadow: inset 0 -2px #ffffff;
 }
 
 #workspaces button.active{
     font-size: 14px;
-    color: #ED8796;
+    /*color: #ED8796;*/
     font-weight: bolder;
+    box-shadow: inset 0 -2px #ffffff;
 }
 
 
@@ -83,14 +99,16 @@ button:hover {
     background: rgba(0, 0, 0, 0.2);
 }
 
+
 #workspaces button.focused{
-    background-color: @borders; /*#64727D;*/
+    background-color: #1E2031;
     box-shadow: inset 0 -3px #ffffff;
 }
 
 #workspaces button.urgent {
     color: #eb4d4b;
 }
+/*
 #workspaces button.default {
     background-color: @borders;
 }
@@ -102,6 +120,7 @@ button:hover {
 #workspaces button.current_output.focused {
     background-color: @borders;
 }
+*/
 
 #mode {
     background-color: #64727D;
@@ -132,45 +151,57 @@ button:hover {
 
 #window,
 #workspaces {
-	border-radius: 0px;
-	border-width: 1px;
-	border-color: var(--accent);
 }
+
 /*
+.modules {
+	padding: 1px;
+}
+
 .modules-right {
+   margin-right: 4px;
+}
+.modules-center {
     border: solid;
-    border-width: 2px;
-    border-color: @theme_text_color;
-    border-radius: 20px;
-    padding: 2px;
+    border-width: 1px;
+    border-color: #ED8796;
+    border-radius: 0px;
+		margin: 2px;
 }
 */
 
-/* If workspaces is the leftmost module, omit left margi: */
+/* If workspaces is the leftmost module, omit left margi:
 .modules-left > widget:first-child > #workspaces {
     background-color: @theme_base_color;
     border: solid;
     border-width: 2px;
     border-color: @borders;
     border-radius: 10px;
-
+		margin-left: 4px;
 }
+*/
 
-/* If workspaces is the rightmost module, omit right margin */
+/* If workspaces is the rightmost module, omit right margin
 .modules-right > widget:last-child > #workspaces {
 }
+*/
 
 #clock {
     background-color: transparent; /*#64727D;*/
 }
 
 #battery {
-    background-color: transparent; /*#ffffff;*/
+    background-color: transparent;/*#363B50;*/
     color: #ffffff; /*#000000;*/
+		margin: 0 10px;
+		padding: 2px 6px;
 }
 
 #battery.charging, #battery.plugged {
-    color: #ffffff;
+    background-color: transparent; /*#363b50;*/
+    color: #ffffff; /*#000000;*/
+		margin: 0 10px;
+		padding: 2px 6px;
 }
 
 @keyframes blink {
@@ -188,6 +219,8 @@ button:hover {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+		margin: 0 10px;
+		padding: 2px 2px;
 }
 
 label:focus {
@@ -195,8 +228,10 @@ label:focus {
 }
 
 #bluetooth {
-    background-color: transparent; /*#2ecc71;*/
+    background-color: transparent; /*#363b50;*/
     color: #ffffff; /*#000000;*/
+		margin: 0 0;
+		padding: 2px 6px;
 }
 
 #cpu {
@@ -225,21 +260,32 @@ label:focus {
 }
 
 #network {
-    background-color: transparent;
+    background-color: transparent; /*#363B50;*/
+    color: #ffffff; /*#000000;*/
+		margin: 0 0;
+		padding: 2px 6px;
 }
 
 #network.disconnected {
-    background-color: transparent;
+    background-color: transparent; /*#363B50;*/
+    color: #ffffff; /*#000000;*/
+		margin: 0 0;
+		padding: 2px 6px;
 }
 
 #pulseaudio {
-    background-color: transparent;
-    color: #ffffff;
+    background-color: transparent; /*#363b50;*/
+    color: #ffffff; /*#000000;*/
+		margin: 0 0;
+		padding: 2px 6px;
 }
 
 #pulseaudio.muted {
-    background-color: transparent;
-    /*color: #2a5c45;*/
+    background-color: transparent; /*#363b50;*/
+    color: #ffffff; /*#000000;*/
+		margin: 0 0;
+		margin-right: 10px;
+		padding: 2px 6px;
 }
 
 #wireplumber {
@@ -283,6 +329,8 @@ label:focus {
 
 #tray {
     background-color: transparent;
+		padding: 0;
+		margin: 0;
 }
 
 #tray > .passive {

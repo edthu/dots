@@ -1,10 +1,10 @@
 {
     "layer": "top", // Waybar at top layer
     "position": "bottom", // Waybar position (top|bottom|left|right)
-    //"height": 28, // Waybar height (to be removed for auto height)
+    //"height": 21, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 0, // Gaps between modules (4px)
-    "margin-top": 0,
+		"margin-top": 0,
     // Choose the order of the modules
     "modules-center": ["hyprland/workspaces"],
     "modules-left": ["battery", "tray"],
@@ -15,9 +15,9 @@
 	    "all-outputs": false,
 	    "active-only": false,
 	    "format-icons": {
-	    	    "1": "<span font='15'>󰈹</span>",
-		    "2": "<span font='15'></span>",
-		    "3": "<span font='15'>󱓷</span>",
+				"1": "󰈹",
+		    "2": "",
+		    "3": "󱓷",
 		    "4": "4",
 		    "5": "5",
 		    "6": "6",
@@ -91,7 +91,7 @@
 	    }
     },
     "tray": {
-	    "icon-size": 15,
+	    "icon-size": 14,
 	    "spacing": 10,
 	    "show-passive-items": true
     },
@@ -150,13 +150,13 @@
 	    "format-alt": "{time} {icon}",
 	    // "format-good": "", // An empty format will hide the module
 	    // "format-full": "",
-	    "format-icons": ["󰁻", "󰁽", "󰁿", "󰂁", "<span font='15' rise='-2.8pt'>󱈏</span>"]
+	    "format-icons": ["󰁻", "󰁽", "󰁿", "󰂁", "󱈏"]
     },
     "battery#bat2": {
 	    "bat": "BAT2"
     },
-    "network": { // 
-	    "format-wifi": "<span font='15' rise='-2.8pt'>󰘊</span> {essid}",
+    "network": {
+	    "format-wifi": " {essid}",
 	    "on-click": "iwgtk",
 	    "format-ethernet": "󰈁",
 	"tooltip": true,
@@ -168,18 +168,18 @@
         // "scroll-step": 1, // %, can be a float
         "format": "{icon} {volume}%  {format_source} ",
         "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": "<span font='15' rise='-2.8pt'>󰝟</span>{icon}  {format_source}",
-        "format-muted": "<span font='15' rise='-2.8pt'>󰝟</span> {format_source}",
-        "format-source": "<span font='15' rise='-2.8pt'></span> {volume}%",
-        "format-source-muted": "<span font='15' rise='-2.8pt'></span>",
+        "format-bluetooth-muted": "󰝟{icon}  {format_source}",
+        "format-muted": "󰝟 {format_source}",
+        "format-source": "{volume}%",
+        "format-source-muted": "",
         "format-icons": {
-            "headphone": "<span font='15' rise='-2.8pt'></span>",
+            "headphone": "",
             "hands-free": "",
-            "headset": "<span font='15' rise='-2.8pt'>󰋎</span>",
-            "phone": "<span font='15' rise='-2.8pt'></span>",
-            "portable": "<span font='15' rise='-2.8pt'></span>",
+            "headset": "󰋎",
+            "phone": "",
+            "portable": "",
             "car": "",
-            "default": ["<span font='15' rise='-2.8pt'></span>", "<span font='15'></span>", "<span font='15' rise='-2.8pt'></span>"]
+            "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
     },
