@@ -22,7 +22,7 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 
-export PATH="$PATH:/home/eax/.local/share/coursier/bin"
+export PATH="$PATH:/home/$USER/.local/share/coursier/bin"
 
 alias ga="git add"
 alias gc="git commit -m"
