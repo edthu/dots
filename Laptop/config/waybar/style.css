@@ -4,6 +4,7 @@
     min-height: 0;
     padding: 0;
 		/*color: #ffffff;*/
+		edge-color: #ED8796;
 }
 
 
@@ -131,6 +132,9 @@ button:hover {
 
 #window,
 #workspaces {
+	border-radius: 0px;
+	border-width: 1px;
+	border-color: var(--accent);
 }
 /*
 .modules-right {
